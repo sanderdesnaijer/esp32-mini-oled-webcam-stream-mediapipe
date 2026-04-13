@@ -26,35 +26,11 @@
 #include <esp_http_server.h>
 #include <esp_https_server.h>
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define SDA_PIN 21
-#define SCL_PIN 22
-#define OLED_ADDR 0x3C
-
 // =============================
 //  Edit these before uploading
 // =============================
 const char* ssid     = "YOUR_WIFI_NAME";
 const char* password = "YOUR_WIFI_PASSWORD";
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-
-// Frame buffer for remote face data (128x64 = 1024 bytes at 1 bit per pixel)
-uint8_t oledBuffer[SCREEN_WIDTH * SCREEN_HEIGHT / 8];
-bool hasRemoteFrame = false;
-bool newFrameReady = false;
-
-// Dual servers: HTTP on 80, HTTPS on 443
-httpd_handle_t httpServer = nullptr;
-httpd_handle_t httpsServer = nullptr;
-
-// ---- Debug stats ----
-unsigned long frameRecvCount = 0;
-unsigned long frameDisplayCount = 0;
-unsigned long lastStatsTime = 0;
-unsigned long lastDecodeUs = 0;
-unsigned long lastDisplayUs = 0;
 
 // ==============================================================
 //  Self-signed SSL certificate. MUST be filled in before compile.
@@ -77,6 +53,31 @@ static const char key_pem[] =
 "-----BEGIN PRIVATE KEY-----\n"
 "PASTE YOUR PRIVATE KEY HERE\n"
 "-----END PRIVATE KEY-----\n";
+
+// OLED and display setup
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define SDA_PIN 21
+#define SCL_PIN 22
+#define OLED_ADDR 0x3C
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+// Frame buffer for remote face data (128x64 = 1024 bytes at 1 bit per pixel)
+uint8_t oledBuffer[SCREEN_WIDTH * SCREEN_HEIGHT / 8];
+bool hasRemoteFrame = false;
+bool newFrameReady = false;
+
+// Dual servers: HTTP on 80, HTTPS on 443
+httpd_handle_t httpServer = nullptr;
+httpd_handle_t httpsServer = nullptr;
+
+// ---- Debug stats ----
+unsigned long frameRecvCount = 0;
+unsigned long frameDisplayCount = 0;
+unsigned long lastStatsTime = 0;
+unsigned long lastDecodeUs = 0;
+unsigned long lastDisplayUs = 0;
 
 #if __has_include(<cert_check_stub>)
 // never true, just keeps compilers quiet about the check below
