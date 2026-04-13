@@ -82,17 +82,26 @@ const char* password = "YOUR_WIFI_PASSWORD";
 
 ### 6. Generate a certificate
 
-The sketch will not compile until you paste a real self-signed certificate and private key in. This is a one-time step.
+The sketch will not compile until you paste a self-signed certificate and private key into it. This is a one-time step. Pick whichever option feels easier.
 
-**Option A: use the helper script** (macOS / Linux / Git Bash on Windows / WSL):
+**Option A (recommended): use the web generator.** No install, works on any OS or phone, takes about 30 seconds.
+
+1. Open [sanderdesnaijer.github.io/esp32-mini-oled-webcam-stream-mediapipe/cert-generator.html](https://sanderdesnaijer.github.io/esp32-mini-oled-webcam-stream-mediapipe/cert-generator.html).
+2. Click **Generate**. The page creates a fresh 2048-bit RSA keypair and wraps it in a self-signed X.509 cert valid for 10 years. Everything runs locally in your browser. Nothing is uploaded. You can verify this by opening DevTools and watching the Network tab while you click Generate.
+3. Click **Copy certificate**, then paste it over the `cert_pem[]` placeholder block in `browser-oled.ino`.
+4. Click **Copy private key**, then paste it over the `key_pem[]` placeholder block.
+
+**Option B: run the helper script locally** (if you prefer not to trust a web page with your own keys, or you want to verify the code). Requires a terminal and `openssl`.
 
 ```
 bash scripts/generate_cert.sh
 ```
 
-It prints two blocks to your terminal. Copy them and paste them over the placeholder `cert_pem[]` and `key_pem[]` blocks in `browser-oled.ino`.
+On macOS / Linux, the easiest way to get to the right folder is: open **Terminal**, type `cd ` (with a trailing space), drag the extracted project folder onto the Terminal window, press **Enter**, then paste the command above.
 
-**Option B: plain openssl** (any platform with openssl):
+The script prints two blocks of C code. Copy them and paste them over the `cert_pem[]` and `key_pem[]` placeholders in `browser-oled.ino`.
+
+**Option C: plain openssl** (any platform with openssl installed):
 
 ```
 openssl req -x509 -newkey rsa:2048 -nodes \
@@ -100,9 +109,9 @@ openssl req -x509 -newkey rsa:2048 -nodes \
   -subj "/CN=esp32.local"
 ```
 
-Open `cert.pem` and `key.pem` in a text editor. For each line in `cert.pem`, wrap it as `"line\n"` and paste inside the `cert_pem[]` block in the sketch. Same for `key.pem` into `key_pem[]`. Keep the `-----BEGIN-----` and `-----END-----` lines.
+Open `cert.pem` and `key.pem` in a text editor. For each line, wrap it as `"line\n"` and paste inside the matching block in the sketch. Keep the `-----BEGIN-----` and `-----END-----` lines.
 
-**Do not commit your private key to a public repo.** Keep `cert.pem` and `key.pem` in `.gitignore`. The only file that will end up with keys in it is your local `browser-oled.ino`, which is also why you should not commit your edited sketch back upstream.
+**Do not commit your private key to a public repo.** `cert.pem` and `key.pem` are already in `.gitignore`. The only file that ends up with keys is your local `browser-oled.ino`, which is why you should not commit your edited sketch back to this repo.
 
 ### 7. Upload
 

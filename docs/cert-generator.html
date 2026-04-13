@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>ESP32 Cert Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Generate a self-signed certificate for the ESP32 Mini OLED Webcam Stream sketch. Runs entirely in your browser, nothing is uploaded."/>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:760px;margin:0 auto;padding:20px;background:#1a1a2e;color:#eee;line-height:1.5}
+  h1{font-size:22px;margin:0 0 6px}
+  p{color:#bbb;font-size:14px;margin:4px 0 12px}
+  a{color:#8ab4f8}
+  .privacy{background:#16213e;padding:10px 14px;border-radius:6px;font-size:13px;color:#9ecbff;margin-bottom:14px}
+  button{padding:12px 20px;font-size:15px;border-radius:6px;border:none;cursor:pointer;background:#0f3460;color:#eee;transition:background 0.2s;margin-right:8px}
+  button:hover{background:#1a508b}
+  button.primary{background:#e94560;font-weight:bold}
+  button.primary:hover{background:#d63050}
+  button:disabled{opacity:0.4;cursor:wait}
+  .output{margin-top:16px}
+  .block{margin-bottom:14px}
+  .block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .block-header h2{font-size:14px;margin:0;color:#aaa;font-weight:normal}
+  .copy-btn{padding:6px 12px;font-size:12px;background:#0f3460}
+  textarea{width:100%;min-height:180px;padding:10px;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11px;background:#0d1117;color:#7ee787;border:1px solid #333;border-radius:6px;resize:vertical}
+  #status{padding:8px 12px;background:#16213e;border-radius:6px;font-size:13px;color:#aaa;margin:12px 0}
+  .hidden{display:none}
+  details{margin-top:16px;color:#888;font-size:13px}
+  summary{cursor:pointer}
+</style>
+</head>
+<body>
+<h1>ESP32 Cert Generator</h1>
+<p>Creates a self-signed SSL certificate for the <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe">ESP32 Mini OLED Webcam Stream</a> sketch. Click Generate, then paste both blocks into <code>browser-oled.ino</code> where it says <code>PASTE YOUR CERTIFICATE HERE</code>.</p>
+
+<div class="privacy"><strong>Privacy:</strong> everything runs in your browser. Your private key never leaves this device. You can check: open DevTools &gt; Network, and you will see no requests after the page loads.</div>
+
+<button id="genBtn" class="primary">Generate Certificate</button>
+<div id="status">Ready. Generation takes about 5 seconds.</div>
+
+<div id="output" class="output hidden">
+  <div class="block">
+    <div class="block-header">
+      <h2>1. Paste this over the cert_pem[] block</h2>
+      <button class="copy-btn" data-target="cert-out">Copy</button>
+    </div>
+    <textarea id="cert-out" readonly></textarea>
+  </div>
+  <div class="block">
+    <div class="block-header">
+      <h2>2. Paste this over the key_pem[] block</h2>
+      <button class="copy-btn" data-target="key-out">Copy</button>
+    </div>
+    <textarea id="key-out" readonly></textarea>
+  </div>
+</div>
+
+<details>
+<summary>What is this doing?</summary>
+<p>It generates a 2048-bit RSA keypair and wraps it in a self-signed X.509 certificate (CN=esp32.local, valid 10 years) using the <a href="https://github.com/digitalbazaar/forge">node-forge</a> library. The output is the same two PEM files you would get from <code>openssl req -x509 ...</code>, just preformatted as C string literals so you can paste them into an Arduino sketch. Nothing about this page talks to a server after you load it.</p>
+</details>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
+<script>
+const genBtn   = document.getElementById("genBtn");
+const statusEl = document.getElementById("status");
+const outputEl = document.getElementById("output");
+const certOut  = document.getElementById("cert-out");
+const keyOut   = document.getElementById("key-out");
+
+function formatAsC(varName, pem) {
+  const lines = pem.trim().split(/\r?\n/);
+  const body = lines.map(l => `"${l}\\n"`).join("\n");
+  return `static const char ${varName}[] =\n${body};\n`;
+}
+
+async function generate() {
+  genBtn.disabled = true;
+  statusEl.textContent = "Generating 2048-bit RSA key, this takes ~5 seconds...";
+
+  // Yield so the UI can paint
+  await new Promise(r => setTimeout(r, 50));
+
+  try {
+    const pki = forge.pki;
+    const keypair = pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
+
+    const cert = pki.createCertificate();
+    cert.publicKey = keypair.publicKey;
+    cert.serialNumber = "01" + Math.floor(Math.random() * 1e15).toString(16);
+    cert.validity.notBefore = new Date();
+    cert.validity.notAfter = new Date();
+    cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 10);
+
+    const attrs = [{ name: "commonName", value: "esp32.local" }];
+    cert.setSubject(attrs);
+    cert.setIssuer(attrs);
+    cert.setExtensions([
+      { name: "basicConstraints", cA: true },
+      { name: "keyUsage", keyCertSign: true, digitalSignature: true, keyEncipherment: true },
+      { name: "extKeyUsage", serverAuth: true },
+      { name: "subjectAltName", altNames: [{ type: 2, value: "esp32.local" }] }
+    ]);
+    cert.sign(keypair.privateKey, forge.md.sha256.create());
+
+    const certPem = pki.certificateToPem(cert);
+    const keyPem  = pki.privateKeyToPem(keypair.privateKey);
+
+    certOut.value = formatAsC("cert_pem", certPem);
+    keyOut.value  = formatAsC("key_pem",  keyPem);
+
+    outputEl.classList.remove("hidden");
+    statusEl.textContent = "Done. Copy each block and paste into browser-oled.ino.";
+  } catch (e) {
+    statusEl.textContent = "Error: " + e.message;
+  } finally {
+    genBtn.disabled = false;
+  }
+}
+
+genBtn.addEventListener("click", generate);
+
+document.querySelectorAll(".copy-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const target = document.getElementById(btn.dataset.target);
+    target.select();
+    navigator.clipboard.writeText(target.value).then(() => {
+      const old = btn.textContent;
+      btn.textContent = "Copied";
+      setTimeout(() => { btn.textContent = old; }, 1200);
+    }).catch(() => {
+      btn.textContent = "Select and copy manually";
+    });
+  });
+});
+</script>
+</body>
+</html>
