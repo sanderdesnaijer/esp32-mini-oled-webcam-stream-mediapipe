@@ -1,0 +1,15 @@
+# Local build artifacts
+build/
+.vscode/
+.pio/
+
+# Self-signed certificate files. Your private key must never be
+# committed. Only the generated cert_pem[]/key_pem[] inside the
+# edited browser-oled.ino end up outside this folder.
+cert.pem
+key.pem
+*.key
+
+# OS noise
+.DS_Store
+Thumbs.db
