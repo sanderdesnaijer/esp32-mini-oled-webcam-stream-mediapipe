@@ -122,10 +122,20 @@ String pageHtml() {
     details{margin-top:8px}
     summary{cursor:pointer;font-size:12px;color:#aaa}
     #debugStats{margin:6px 0;padding:8px;background:#0d1117;border-radius:6px;font-size:11px;color:#7ee787;line-height:1.5;white-space:pre}
+    .privacy{margin:0 0 8px;padding:8px 10px;background:#16213e;border-radius:6px;font-size:12px;color:#aaa}
+    .privacy summary{color:#ccc}
+    .privacy p{margin:6px 0 0;line-height:1.5}
+    .privacy a{color:#7ee787}
   </style>
 </head>
 <body>
   <h1>OLED Webcam Stream</h1>
+
+  <details class="privacy">
+    <summary>Why did my browser warn me?</summary>
+    <p>Your ESP32 uses a self-signed certificate because no public authority signs certs for devices on your private WiFi. That is why your browser warns you. It does not mean this page is unsafe.</p>
+    <p>Nothing leaves your network. Your camera feed is processed entirely in your browser. The only data sent to the ESP32 is the final 1-bit 128x64 image, which is all it can display. Source code: <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe" target="_blank" rel="noopener">GitHub</a>.</p>
+  </details>
 
   <div class="controls">
     <button id="toggleBtn">Start</button>

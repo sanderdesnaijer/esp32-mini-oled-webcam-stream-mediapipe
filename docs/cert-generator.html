@@ -33,7 +33,11 @@
 <h1>ESP32 Cert Generator</h1>
 <p>Creates a self-signed SSL certificate for the <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe">ESP32 Mini OLED Webcam Stream</a> sketch. Click Generate, then paste both blocks into <code>browser-oled.ino</code> where it says <code>PASTE YOUR CERTIFICATE HERE</code>.</p>
 
-<div class="privacy"><strong>Privacy:</strong> everything runs in your browser. Your private key never leaves this device. You can check: open DevTools &gt; Network, and you will see no requests after the page loads.</div>
+<div class="privacy">
+  <strong>Privacy:</strong> this page generates a cryptographic key on your computer. The key never leaves your browser. It is not sent to GitHub, to the author, or to any server anywhere.
+  <p style="margin:6px 0 0;color:#bbb">Verify it yourself: open your browser's DevTools, go to the <strong>Network</strong> tab, then click <strong>Generate</strong>. You will see zero network requests. Everything is computed locally by the <a href="https://github.com/digitalbazaar/forge">node-forge</a> library that loaded when you opened this page.</p>
+  <p style="margin:6px 0 0;color:#bbb">You can also view the full source of this page (it is plain HTML and JavaScript, around 140 lines) on <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe/blob/main/docs/cert-generator.html">GitHub</a>, or save the page and run it offline.</p>
+</div>
 
 <button id="genBtn" class="primary">Generate Certificate</button>
 <div id="status">Ready. Generation takes about 5 seconds.</div>

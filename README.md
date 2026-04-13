@@ -66,21 +66,44 @@ Download from [arduino.cc/en/software](https://www.arduino.cc/en/software). Vers
 
 That is all. No HTTPS library is needed because it ships with the ESP32 core.
 
-### 4. Select your board
+### 4. Download this project
 
+Grab the code from GitHub.
+
+**Easy way (no Git required):**
+
+1. Go to [github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe](https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe).
+2. Click the green **Code** button, then **Download ZIP**.
+3. Unzip it somewhere you can find again (Desktop is fine).
+4. The folder will be named `esp32-mini-oled-webcam-stream-mediapipe-main`. Inside, double-click `browser-oled.ino` to open it in the Arduino IDE.
+
+**Git way (if you already use Git):**
+
+```
+git clone https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe.git
+cd esp32-mini-oled-webcam-stream-mediapipe
+```
+
+Then open `browser-oled.ino` in the Arduino IDE.
+
+> Arduino IDE may ask to move the `.ino` into its own folder. It is already in its own folder, so just click **Cancel** or **OK** (either works, the file stays where it is).
+
+### 5. Select your board
+
+- **Plug the ESP32 into your computer with a USB cable.**
 - **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
-- **Tools > Port** and pick the ESP32's serial port.
+- **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
 
-### 5. Configure WiFi
+### 6. Configure WiFi
 
-Open `browser-oled.ino` and edit these two lines near the top:
+In the open sketch, edit these two lines near the top:
 
 ```cpp
 const char* ssid     = "YOUR_WIFI_NAME";
 const char* password = "YOUR_WIFI_PASSWORD";
 ```
 
-### 6. Generate a certificate
+### 7. Generate a certificate
 
 The sketch will not compile until you paste a self-signed certificate and private key into it. This is a one-time step. Pick whichever option feels easier.
 
@@ -113,7 +136,7 @@ Open `cert.pem` and `key.pem` in a text editor. For each line, wrap it as `"line
 
 **Do not commit your private key to a public repo.** `cert.pem` and `key.pem` are already in `.gitignore`. The only file that ends up with keys is your local `browser-oled.ino`, which is why you should not commit your edited sketch back to this repo.
 
-### 7. Upload
+### 8. Upload
 
 Click the **Upload** arrow. The first compile takes a few minutes because mbedtls and the HTTPS server components get linked in. Subsequent builds are fast.
 
@@ -147,13 +170,27 @@ Run the cert generator, paste, edit WiFi, `pio run -t upload`.
 
 1. Wait for the OLED to show the `https://<ip>/` URL.
 2. On your phone or laptop (same WiFi), open that exact URL. **Must be https, not http.**
-3. The browser will warn about the cert. This is expected, it is self-signed.
+3. The browser will show a "Not secure" or "Your connection is not private" warning. This is expected and safe in this case. See the note below if you want to understand why.
    - **iPhone / Safari:** tap **Show Details**, then **visit this website**, then **Visit Website**.
    - **Chrome / Android:** tap **Advanced**, then **Proceed anyway**.
 4. Wait for `Ready. Press Start.` at the bottom of the page. The first load downloads the MediaPipe model (a few MB), later loads are cached.
 5. Tap **Start** and allow camera access.
 6. Pick a style. Your webcam now streams to the OLED.
 7. Switch **Front** / **Back** camera anytime from the dropdown.
+
+## About the browser security warning
+
+The first thing your browser shows you on `https://<esp32-ip>/` is a scary-looking red warning. It is expected. Here is the honest explanation so you can decide for yourself whether to proceed.
+
+**Why the warning appears.** Browsers want every HTTPS site to present a certificate signed by a trusted authority (like Let's Encrypt or DigiCert). That system exists for public websites on the open internet. Your ESP32 is not on the internet. It is a small device sitting on your own WiFi with a local IP like `192.168.x.x`. No public authority signs certificates for devices on your private network, so the ESP32 signs its own. The browser cannot verify a self-signed certificate, so it warns you. The same warning appears for your router's admin page, most printers, and most NAS devices for exactly this reason.
+
+**What the warning does not mean in this case:**
+
+- It does not mean the page is malicious.
+- It does not mean your traffic is being watched. Your phone talks directly to the ESP32 on your own WiFi. Nothing leaves your network.
+- It does not mean your camera feed is uploaded anywhere. All camera processing happens in your browser. The only thing sent to the ESP32 is the final 1-bit 128x64 image, which is all it can display.
+
+**You can verify all of this yourself.** The entire sketch and web page is open source in this repo. Search the HTML for `fetch(` and you will see the only network call the page makes is a POST to your ESP32's IP address. Nothing else.
 
 ## How it works
 
@@ -183,7 +220,7 @@ That keeps the ESP32 side tiny and fast, so it comfortably handles 10 to 15 FPS.
 
 **OLED shows nothing.** Check wiring and that `OLED_ADDR` matches your display (`0x3C` or `0x3D`).
 
-**Compile error: "cert_pem is empty".** You skipped step 6. Generate a cert and paste it in.
+**Compile error: "cert_pem is empty".** You skipped step 7. Generate a cert and paste it in.
 
 **"Camera error: undefined is not an object".** You visited `http://` instead of `https://`. The sketch redirects HTTP to HTTPS, but if you typed the IP manually, type `https://`.
 
