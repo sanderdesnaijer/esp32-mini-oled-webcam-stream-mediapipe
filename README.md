@@ -51,17 +51,18 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 5. Connect **SDA** on the OLED to **GPIO 21** on the ESP32.
 6. Plug USB back in and upload the sketch. If the display stays blank, recheck GND/VCC and verify SDA/SCL are not swapped.
 
-**Overview — signal routing**
-
-![Schematic-style diagram: ESP32 DevKit wired to a 4-pin SSD1306 OLED over I2C, SDA on GPIO 21 and SCL on GPIO 22, VCC to 3.3 V and GND to GND.](esp32-ssd1306-wiring-diagram.webp)
-
-**ESP32 end**
-
-![Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED.](esp32-ssd1306-wiring-esp32.webp)
-
-**OLED module end**
-
-![Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins.](esp32-ssd1306-wiring-oled.webp)
+<table>
+<tr>
+<th align="center">Overview — signal routing</th>
+<th align="center">ESP32 end</th>
+<th align="center">OLED module end</th>
+</tr>
+<tr>
+<td align="center" valign="top"><img src="esp32-ssd1306-wiring-diagram.webp" alt="Schematic-style diagram: ESP32 DevKit wired to a 4-pin SSD1306 OLED over I2C, SDA on GPIO 21 and SCL on GPIO 22, VCC to 3.3 V and GND to GND." width="240"/></td>
+<td align="center" valign="top"><img src="esp32-ssd1306-wiring-esp32.webp" alt="Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED." width="240"/></td>
+<td align="center" valign="top"><img src="esp32-ssd1306-wiring-oled.webp" alt="Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins." width="240"/></td>
+</tr>
+</table>
 
 ## Software setup (Arduino IDE)
 
