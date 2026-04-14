@@ -42,6 +42,27 @@ Default pins: `SDA=21`, `SCL=22`.
 
 If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of the sketch. Any I2C scanner sketch will tell you the address.
 
+### Step-by-step
+
+1. **Power off** the ESP32 (unplug USB) while you connect wires.
+2. Connect **GND** on the OLED to **GND** on the ESP32 (common ground for I2C).
+3. Connect **VCC** on the OLED to **3.3V** on the ESP32. Most 4-pin SSD1306 modules expect 3.3 V; do not use 5 V unless your board’s silkscreen says it is 5 V tolerant.
+4. Connect **SCL** on the OLED to **GPIO 22** on the ESP32.
+5. Connect **SDA** on the OLED to **GPIO 21** on the ESP32.
+6. Plug USB back in and upload the sketch. If the display stays blank, recheck GND/VCC and verify SDA/SCL are not swapped.
+
+**Overview — signal routing**
+
+![Schematic-style diagram: ESP32 DevKit wired to a 4-pin SSD1306 OLED over I2C, SDA on GPIO 21 and SCL on GPIO 22, VCC to 3.3 V and GND to GND.](esp32-ssd1306-wiring-diagram.webp)
+
+**ESP32 end**
+
+![Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED.](esp32-ssd1306-wiring-esp32.webp)
+
+**OLED module end**
+
+![Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins.](esp32-ssd1306-wiring-oled.webp)
+
 ## Software setup (Arduino IDE)
 
 ### 1. Install the Arduino IDE
