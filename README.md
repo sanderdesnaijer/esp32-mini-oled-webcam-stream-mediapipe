@@ -7,6 +7,7 @@ Works on **iPhone (Safari)**, **Android (Chrome)**, and any desktop browser. Bro
 Keywords: ESP32, SSD1306, mini OLED, MediaPipe, Face Landmarker, webcam, Arduino, PlatformIO, ESP-IDF, HTTPS, iOS Safari camera, Chrome camera, face tracking, 1-bit dithering.
 
 <!-- YouTube walkthrough (TODO: replace thumbnail + video ID) -->
+
 [![Watch the video](docs/thumbnail.jpg)](https://youtu.be/YOUR_VIDEO_ID)
 
 ## Features
@@ -20,12 +21,12 @@ Keywords: ESP32, SSD1306, mini OLED, MediaPipe, Face Landmarker, webcam, Arduino
 
 ## Hardware
 
-| Part | Notes |
-|---|---|
-| ESP32 dev board | Any ESP32 with WiFi. ESP32-WROOM-32 is the classic. |
-| 0.96 inch SSD1306 OLED, 128x64, I2C | The 4-pin modules (VCC, GND, SCL, SDA). |
-| 4 jumper wires | Female-to-female or female-to-male, depending on your board. |
-| USB cable | For flashing. |
+| Part                                | Notes                                                        |
+| ----------------------------------- | ------------------------------------------------------------ |
+| ESP32 dev board                     | Any ESP32 with WiFi. ESP32-WROOM-32 is the classic.          |
+| 0.96 inch SSD1306 OLED, 128x64, I2C | The 4-pin modules (VCC, GND, SCL, SDA).                      |
+| 4 jumper wires                      | Female-to-female or female-to-male, depending on your board. |
+| USB cable                           | For flashing.                                                |
 
 Total cost around 10 to 15 USD.
 
@@ -33,12 +34,12 @@ Total cost around 10 to 15 USD.
 
 Default pins: `SDA=21`, `SCL=22`.
 
-| OLED | ESP32 |
-|---|---|
-| VCC | 3.3V |
-| GND | GND |
-| SCL | GPIO 22 |
-| SDA | GPIO 21 |
+| OLED | ESP32   |
+| ---- | ------- |
+| VCC  | 3.3V    |
+| GND  | GND     |
+| SCL  | GPIO 22 |
+| SDA  | GPIO 21 |
 
 If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of the sketch. Any I2C scanner sketch will tell you the address.
 
@@ -61,8 +62,8 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 <th align="center">OLED module end</th>
 </tr>
 <tr>
-<td align="center" valign="top"><img src="esp32-ssd1306-wiring-esp32.webp" alt="Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED." width="400"/></td>
-<td align="center" valign="top"><img src="esp32-ssd1306-wiring-oled.webp" alt="Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins." width="400"/></td>
+<td align="center" valign="top"><img src="esp32-ssd1306-wiring-oled.webp" alt="Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED." width="400"/></td>
+<td align="center" valign="top"><img src="esp32-ssd1306-wiring-esp32.webp" alt="Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins." width="400"/></td>
 </tr>
 </table>
 
