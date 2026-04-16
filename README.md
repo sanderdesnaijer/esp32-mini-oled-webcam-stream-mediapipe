@@ -263,6 +263,24 @@ That keeps the ESP32 side tiny and fast, so it comfortably handles 10 to 15 FPS.
 
 **Different LAN, same WiFi.** Some guest networks block peer-to-peer. Try your main WiFi.
 
+## Not ready for production
+
+This sketch is a hobby project. It is safe to run on your own home WiFi, but it is not something you would ship as a product. If you wanted to harden it, here is roughly what you would add, in order of importance.
+
+**Require a token on every request.** Right now anyone on your WiFi who knows the IP can push frames to the OLED. A production version would require a shared secret on every API call, check it in constant time to avoid timing leaks, and store it per device rather than hardcoding it in the sketch.
+
+**Use a real certificate.** Self-signed works on your LAN because you know who signed it. A production device would either get a cert from a public CA like Let's Encrypt, or sit behind a reverse proxy that handles TLS for it. That also removes the browser warning.
+
+**Lock down CORS and validate the origin.** The current handler accepts requests from any origin. A production version would allow only its own web page, reject everything else, and check the Host and Origin headers server-side so other tabs in the user's browser cannot push frames to the device.
+
+**Rate limit and validate inputs.** Cap frames per second, cap body size, return proper error codes. The sketch assumes well-behaved clients, production assumes the opposite.
+
+**Keep it off the public internet.** Never port-forward this device. If you need remote access, put it behind a VPN or an authenticated reverse proxy.
+
+**Turn on ESP32 security features.** For a shipping product, enable secure boot, flash encryption, and NVS encryption so the token and WiFi credentials are not readable just by reading the flash chip with a programmer.
+
+**Plan for updates.** Hobby sketches are flashed once over USB. A real product needs OTA updates so you can push security fixes without a cable.
+
 ## License
 
 MIT. Credit appreciated but not required.
