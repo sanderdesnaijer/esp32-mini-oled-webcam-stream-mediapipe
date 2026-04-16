@@ -167,11 +167,6 @@ String pageHtml() {
 
   <div id="status">Loading MediaPipe...</div>
 
-  <details id="debugPanel">
-    <summary>Debug Stats</summary>
-    <pre id="debugStats">Press Start to see stats...</pre>
-  </details>
-
 <script type="module">
 import{FaceLandmarker,FilesetResolver}from"https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18";
 
@@ -444,19 +439,6 @@ async function streamLoop(){
 
 function setStatus(msg){statusEl.textContent=msg}
 
-// ---- Debug stats ----
-const debugStats=document.getElementById("debugStats");let statsTimer=null;
-document.getElementById("debugPanel").addEventListener("toggle",(e)=>{
-  if(e.target.open&&!statsTimer){statsTimer=setInterval(pollStats,2000);pollStats()}else if(!e.target.open&&statsTimer){clearInterval(statsTimer);statsTimer=null}
-});
-async function pollStats(){
-  try{
-    const resp=await fetch(ESP_URL+"/stats");if(!resp.ok){debugStats.textContent="Failed to fetch stats";return}
-    const s=await resp.json();const avgSend=browserSendTimes.length>0?(browserSendTimes.reduce((a,b)=>a+b,0)/browserSendTimes.length).toFixed(0):"n/a";
-    debugStats.textContent="ESP32 Stats\n  Free heap:     "+(s.freeHeap/1024).toFixed(1)+" KB\n  Frames recv:   "+s.recvFrames+"\n  B64 decode:    "+s.decode_us+" us\n  I2C display:   "+s.display_us+" us\n\nBrowser Stats\n  Avg send RTT:  "+avgSend+" ms\n  Send queue:    "+(sendingFrame?"busy":"idle");
-  }catch(e){debugStats.textContent="Could not reach ESP32: "+e.message}
-}
-
 // ---- Boot ----
 initMediaPipe();
 </script>
@@ -576,18 +558,6 @@ static esp_err_t h_frame_options(httpd_req_t *req) {
   return httpd_resp_send(req, "", 0);
 }
 
-// ---- GET /stats ----
-static esp_err_t h_stats(httpd_req_t *req) {
-  char buf[256];
-  snprintf(buf, sizeof(buf),
-    "{\"freeHeap\":%u,\"recvFrames\":%lu,\"decode_us\":%lu,\"display_us\":%lu}",
-    (unsigned)ESP.getFreeHeap(), frameRecvCount, lastDecodeUs, lastDisplayUs
-  );
-  httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
-  httpd_resp_set_type(req, "application/json");
-  return httpd_resp_send(req, buf, HTTPD_RESP_USE_STRLEN);
-}
-
 // ---- Register routes on a given server ----
 static inline void regRoute(httpd_handle_t server, const char *uri, httpd_method_t method, esp_err_t (*h)(httpd_req_t*)) {
   httpd_uri_t r = {};
@@ -602,7 +572,6 @@ static void registerRoutes(httpd_handle_t server, bool isHttps) {
   regRoute(server, "/",      HTTP_GET,     isHttps ? h_root : h_root_redirect);
   regRoute(server, "/frame", HTTP_POST,    h_frame);
   regRoute(server, "/frame", HTTP_OPTIONS, h_frame_options);
-  regRoute(server, "/stats", HTTP_GET,     h_stats);
 }
 
 // ==============================================================

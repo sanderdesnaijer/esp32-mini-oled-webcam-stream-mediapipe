@@ -50,7 +50,6 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 3. Connect **VCC** on the OLED to **3.3V** on the ESP32. Most 4-pin SSD1306 modules expect 3.3 V; do not use 5 V unless your board’s silkscreen says it is 5 V tolerant.
 4. Connect **SCL** on the OLED to **GPIO 22** on the ESP32.
 5. Connect **SDA** on the OLED to **GPIO 21** on the ESP32.
-6. Plug USB back in and upload the sketch. If the display stays blank, recheck GND/VCC and verify SDA/SCL are not swapped.
 
 **Overview — signal routing**
 
@@ -113,11 +112,11 @@ Then open `browser-oled.ino` in the Arduino IDE.
 
 > Arduino IDE may ask to move the `.ino` into its own folder. It is already in its own folder, so just click **Cancel** or **OK** (either works, the file stays where it is).
 
-### 5. Select your board
+### 5. Plug in and select your ESP32
 
 - **Plug the ESP32 into your computer with a USB cable.**
-- **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
-- **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
+- In Arduino IDE, go to **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
+- Then go to **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
 
 ### 6. Configure WiFi
 
