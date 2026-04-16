@@ -120,13 +120,7 @@ Then open the Boards Manager and install:
 
 That is all. No HTTPS library is needed because it ships with the ESP32 core.
 
-### 5. Plug in and select your ESP32
-
-- **Plug the ESP32 into your computer with a USB cable.**
-- In Arduino IDE, go to **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
-- Then go to **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
-
-### 6. Configure WiFi
+### 5. Configure WiFi
 
 In the open sketch, edit these two lines near the top:
 
@@ -135,7 +129,7 @@ const char* ssid     = "YOUR_WIFI_NAME";
 const char* password = "YOUR_WIFI_PASSWORD";
 ```
 
-### 7. Generate a certificate
+### 6. Generate a certificate
 
 The sketch will not compile until you paste a self-signed certificate and private key into it. This is a one-time step. Pick whichever option feels easier.
 
@@ -167,6 +161,13 @@ openssl req -x509 -newkey rsa:2048 -nodes \
 Open `cert.pem` and `key.pem` in a text editor. For each line, wrap it as `"line\n"` and paste inside the matching block in the sketch. Keep the `-----BEGIN-----` and `-----END-----` lines.
 
 **Do not commit your private key to a public repo.** `cert.pem` and `key.pem` are already in `.gitignore`. The only file that ends up with keys is your local `browser-oled.ino`, which is why you should not commit your edited sketch back to this repo.
+
+### 7. Plug in and select your ESP32
+
+- **Plug the ESP32 into your computer with a USB cable.**
+- In Arduino IDE, go to **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
+- Then go to **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
+- Set **Tools > Upload Speed** to **115200**. The default (often 921600) flashes faster but fails on many cables and USB-serial chips with a "chip stopped responding" error. 115200 is slower but almost always works. Once you have a successful upload, you can try 460800 for speed if you want.
 
 ### 8. Upload
 
