@@ -165,9 +165,11 @@ Open `cert.pem` and `key.pem` in a text editor. For each line, wrap it as `"line
 ### 7. Plug in and select your ESP32
 
 - **Plug the ESP32 into your computer with a USB cable.**
-- In Arduino IDE, go to **Tools > Board > esp32 > ESP32 Dev Module** (or whichever matches your board).
-- Then go to **Tools > Port** and pick the ESP32's serial port. On macOS it looks like `/dev/cu.usbserial-XXXX` or `/dev/cu.SLAB_USBtoUART`. On Windows it will be `COM3`, `COM4`, etc. If you don't see the port, you may need to install the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
-- Set **Tools > Upload Speed** to **115200**. The default (often 921600) flashes faster but fails on many cables and USB-serial chips with a "chip stopped responding" error. 115200 is slower but almost always works. Once you have a successful upload, you can try 460800 for speed if you want.
+- Click the **Board and Port Selector** at the top of the IDE (next to the Verify and Upload buttons), then click **Select other board and port...** to open the dialog.
+- For **board**, search and pick **ESP32 Dev Module**. For **port**, pick the one that looks like a USB serial port. On macOS it looks like `/dev/cu.usbserial-XXXX`. On Windows it will be `COM3`, `COM4`, etc. If no port shows up, you may need the CP210x or CH340 USB driver for your board (Google the chip name printed near the USB connector).
+- Set **Tools > Upload Speed** to **115200**. The default (often 921600) flashes faster but fails on many cables with a "chip stopped responding" error. 115200 is slower but almost always works.
+
+> Menu fallback: the same picks are available at **Tools > Board > esp32 > ESP32 Dev Module** and **Tools > Port**.
 
 ### 8. Upload
 
