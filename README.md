@@ -72,27 +72,9 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 
 Download from [arduino.cc/en/software](https://www.arduino.cc/en/software). Version 2.x or newer.
 
-### 2. Add ESP32 board support
+### 2. Download this project
 
-1. **File > Preferences** (macOS: **Arduino IDE > Settings**).
-2. In **Additional Board Manager URLs**, add:
-   ```
-   https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-   ```
-3. **Tools > Board > Boards Manager**, search **esp32**, install **esp32 by Espressif Systems**. You need version **3.0.0 or newer**, because the sketch uses the built-in `esp_https_server` component.
-
-### 3. Install the libraries
-
-**Sketch > Include Library > Manage Libraries**, then install:
-
-- **Adafruit GFX Library**
-- **Adafruit SSD1306**
-
-That is all. No HTTPS library is needed because it ships with the ESP32 core.
-
-### 4. Download this project
-
-Grab the code from GitHub.
+Grab the code from GitHub. Doing this now, before the IDE setup, means everything after this point happens inside the IDE without context switching.
 
 **Easy way (no Git required):**
 
@@ -111,6 +93,32 @@ cd esp32-mini-oled-webcam-stream-mediapipe
 Then open `browser-oled.ino` in the Arduino IDE.
 
 > Arduino IDE may ask to move the `.ino` into its own folder. It is already in its own folder, so just click **Cancel** or **OK** (either works, the file stays where it is).
+>
+> You may see red underlines on the `#include` lines at the top of the sketch. That is expected until the next two steps finish; the IDE does not yet know what board you are targeting.
+
+### 3. Add ESP32 board support
+
+First, add the Espressif package URL so the board manager knows where to find ESP32 support:
+
+1. **File > Preferences** (macOS: **Arduino IDE > Settings**).
+2. In **Additional Board Manager URLs**, add:
+   ```
+   https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+   ```
+
+Then open the Boards Manager and install:
+
+1. Click the **Boards Manager** icon in the left sidebar (second icon down, looks like a small board chip). If your sidebar is hidden, the menu fallback is **Tools > Board > Boards Manager**.
+2. Search **esp32** and install **esp32 by Espressif Systems**. You need version **3.0.0 or newer**, because the sketch uses the built-in `esp_https_server` component.
+
+### 4. Install the libraries
+
+1. Click the **Library Manager** icon in the left sidebar (third icon down, looks like a small book). Menu fallback: **Sketch > Include Library > Manage Libraries**.
+2. Search for and install each of:
+   - **Adafruit GFX Library**
+   - **Adafruit SSD1306**
+
+That is all. No HTTPS library is needed because it ships with the ESP32 core.
 
 ### 5. Plug in and select your ESP32
 
