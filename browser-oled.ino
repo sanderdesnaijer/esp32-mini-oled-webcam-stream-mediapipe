@@ -101,32 +101,94 @@ String pageHtml() {
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <style>
     *{box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:520px;margin:0 auto;padding:8px;background:#1a1a2e;color:#eee}
-    h1{font-size:16px;margin:0 0 6px}
-    .controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px}
-    button{padding:8px 14px;font-size:14px;border-radius:6px;border:none;cursor:pointer;background:#0f3460;color:#eee;transition:background 0.2s}
-    button:hover{background:#1a508b}
-    button.stop{background:#c0392b}
-    button.stop:hover{background:#e74c3c}
-    select{padding:6px;border-radius:6px;border:1px solid #444;background:#16213e;color:#eee;font-size:13px}
-    .settings{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#aaa;margin-bottom:8px}
-    .settings label{display:flex;align-items:center;gap:4px}
-    .settings input[type="range"]{width:80px}
-    .previews{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
-    video{width:180px;height:135px;border-radius:6px;border:1px solid #333;background:#000;object-fit:cover}
-    #tiny{image-rendering:pixelated;width:256px;height:128px;border:2px solid #e94560;border-radius:4px;background:#000}
+    :root{
+      --bg:#0f1217;
+      --panel:#1a1f2a;
+      --panel-2:#232937;
+      --line:#2a3142;
+      --fg:#eef0f3;
+      --dim:#9199a8;
+      --dim-2:#5d6675;
+      --accent:#e94560;
+      --accent-hover:#ff5973;
+      --sans:"Segoe UI","Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    }
+    html,body{background:var(--bg)}
+    body{
+      font-family:var(--sans);font-weight:400;
+      max-width:560px;margin:0 auto;padding:24px 16px 40px;
+      color:var(--fg);line-height:1.5;font-size:14px;
+    }
+    h1{
+      font-size:22px;margin:0 0 18px;font-weight:300;
+      letter-spacing:-0.3px;color:#fff;
+    }
+    h1::before{
+      content:"ESP32";display:block;font-size:10px;color:var(--dim);
+      font-weight:600;letter-spacing:3px;margin-bottom:4px;text-transform:uppercase;
+    }
+
+    .controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+    button{
+      font-family:var(--sans);font-size:11px;font-weight:600;
+      letter-spacing:1.5px;text-transform:uppercase;
+      padding:10px 18px;border:none;cursor:pointer;
+      background:var(--accent);color:#fff;transition:background 0.12s;
+    }
+    button:hover{background:var(--accent-hover)}
+    button.stop{background:var(--panel-2);color:var(--fg)}
+    button.stop:hover{background:var(--line)}
+
+    input[type="password"],select{
+      font-family:var(--sans);font-size:13px;color:var(--fg);
+      padding:9px 10px;border:1px solid var(--line);
+      background:var(--panel);
+    }
+    input[type="password"]:focus,select:focus{outline:2px solid var(--accent);outline-offset:-2px;border-color:var(--accent)}
+
+    .settings{
+      display:flex;flex-wrap:wrap;gap:18px;
+      font-size:11px;color:var(--dim);margin-bottom:14px;
+      letter-spacing:1px;text-transform:uppercase;font-weight:600;
+    }
+    .settings label{display:flex;align-items:center;gap:8px}
+    .settings input[type="range"]{width:90px;accent-color:var(--accent)}
+    .settings span{color:var(--fg);font-weight:400;text-transform:none;letter-spacing:0;min-width:22px;display:inline-block;text-align:right}
+
+    .previews{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+    video{width:180px;height:135px;background:#000;object-fit:cover;border:1px solid var(--line)}
+    #tiny{image-rendering:pixelated;width:256px;height:128px;background:#000;border-left:3px solid var(--accent)}
     @media(max-width:520px){
       video{width:140px;height:105px}
       #tiny{width:200px;height:100px}
     }
-    #status{padding:6px 10px;background:#16213e;border-radius:6px;font-size:12px;color:#aaa}
-    details{margin-top:8px}
-    summary{cursor:pointer;font-size:12px;color:#aaa}
-    #debugStats{margin:6px 0;padding:8px;background:#0d1117;border-radius:6px;font-size:11px;color:#7ee787;line-height:1.5;white-space:pre}
-    .privacy{margin:0 0 8px;padding:8px 10px;background:#16213e;border-radius:6px;font-size:12px;color:#aaa}
-    .privacy summary{color:#ccc}
-    .privacy p{margin:6px 0 0;line-height:1.5}
-    .privacy a{color:#7ee787}
+
+    #status{
+      padding:14px 16px;background:var(--panel);
+      font-size:12px;color:var(--dim);
+      border-left:3px solid var(--dim-2);
+      letter-spacing:0.5px;
+    }
+
+    details{margin-top:16px}
+    summary{
+      cursor:pointer;color:var(--fg);font-weight:600;
+      font-size:11px;letter-spacing:2px;text-transform:uppercase;list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    summary::before{content:"+  ";color:var(--accent);font-weight:700}
+    details[open] summary::before{content:"–  "}
+
+    .privacy{
+      background:var(--panel);padding:14px 16px;margin:0 0 16px;
+      border-left:3px solid var(--accent);
+    }
+    .privacy summary{color:#fff}
+    .privacy p{margin:8px 0 0;color:var(--dim);font-size:13px;letter-spacing:normal;text-transform:none;font-weight:400;line-height:1.6}
+    .privacy a{color:var(--fg);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+    .privacy a:hover{color:var(--accent)}
+
+    ::selection{background:var(--accent);color:#fff}
   </style>
 </head>
 <body>
