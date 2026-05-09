@@ -6,10 +6,6 @@ Works on **iPhone (Safari)**, **Android (Chrome)**, and any desktop browser. Bro
 
 Keywords: ESP32, SSD1306, mini OLED, MediaPipe, Face Landmarker, webcam, Arduino, PlatformIO, ESP-IDF, HTTPS, iOS Safari camera, Chrome camera, face tracking, 1-bit dithering.
 
-<!-- YouTube walkthrough (TODO: replace thumbnail + video ID) -->
-
-[![Watch the video](docs/thumbnail.jpg)](https://youtu.be/YOUR_VIDEO_ID)
-
 ## Features
 
 - Single web page at `https://<esp32-ip>/` with live preview and 1-bit preview side by side.
@@ -53,7 +49,7 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 
 **Overview — signal routing**
 
-<p align="center"><img src="esp32-ssd1306-wiring-diagram.webp" alt="Schematic-style diagram: ESP32 DevKit wired to a 4-pin SSD1306 OLED over I2C, SDA on GPIO 21 and SCL on GPIO 22, VCC to 3.3 V and GND to GND." width="640"/></p>
+<p align="center"><img src="docs/esp32-ssd1306-wiring-diagram.webp" alt="Schematic-style diagram: ESP32 DevKit wired to a 4-pin SSD1306 OLED over I2C, SDA on GPIO 21 and SCL on GPIO 22, VCC to 3.3 V and GND to GND." width="640"/></p>
 
 <table>
 <tr>
@@ -61,8 +57,8 @@ If your OLED address is not `0x3C`, change `#define OLED_ADDR` near the top of t
 <th align="center">OLED module end</th>
 </tr>
 <tr>
-<td align="center" valign="top"><img src="esp32-ssd1306-wiring-oled.webp" alt="Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED." width="400"/></td>
-<td align="center" valign="top"><img src="esp32-ssd1306-wiring-esp32.webp" alt="Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins." width="400"/></td>
+<td align="center" valign="top"><img src="docs/esp32-ssd1306-wiring-oled.webp" alt="Photo: jumper wires on an ESP32 development board for 3.3 V, GND, GPIO 21 (SDA), and GPIO 22 (SCL) toward the OLED." width="400"/></td>
+<td align="center" valign="top"><img src="docs/esp32-ssd1306-wiring-esp32.webp" alt="Photo: jumper wires on the SSD1306 OLED module VCC, GND, SCL, and SDA pins." width="400"/></td>
 </tr>
 </table>
 
