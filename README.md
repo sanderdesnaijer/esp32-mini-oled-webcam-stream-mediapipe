@@ -1,5 +1,17 @@
 # ESP32 Mini OLED Webcam Stream (MediaPipe + Arduino)
 
+<p align="center">
+  <a href="https://www.sanderdesnaijer.com/projects/esp32-mini-oled-webcam-stream">Project page</a>
+  ·
+  <a href="https://youtu.be/MOwyMbOZq-Y">YouTube tutorial</a>
+  ·
+  <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe">Source</a>
+</p>
+
+### Full video tutorial
+
+You can follow this YouTube tutorial which walks through all the steps end to end: [`https://youtu.be/MOwyMbOZq-Y`](https://youtu.be/MOwyMbOZq-Y).
+
 Stream your phone or laptop webcam to a tiny 128x64 SSD1306 OLED. Your browser captures video, processes it into a 1-bit stylized frame (dithered, edges, motion trail, scanlines, skull, glitch, SHODAN), and pushes it to the ESP32 over WiFi. The ESP32 just receives and draws.
 
 Works on **iPhone (Safari)**, **Android (Chrome)**, and any desktop browser. Browsers block `getUserMedia` on any LAN IP unless the page is HTTPS, so the sketch runs both an HTTP and an HTTPS server using a self-signed certificate you generate once.
@@ -281,7 +293,7 @@ This sketch is a hobby project. It is safe to run on your own home WiFi, but it 
 
 ## License
 
-MIT. Credit appreciated but not required.
+This project is licensed under the [MIT License](./LICENSE). Credit is appreciated but not required.
 
 ## Credits
 
