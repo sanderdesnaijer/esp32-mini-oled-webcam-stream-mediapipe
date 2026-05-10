@@ -1,16 +1,32 @@
 # ESP32 Mini OLED Webcam Stream (MediaPipe + Arduino)
 
 <p align="center">
-  <a href="https://www.sanderdesnaijer.com/projects/esp32-mini-oled-webcam-stream">Project page</a>
+  <img src="https://img.shields.io/badge/platform-ESP32-blue" alt="Platform: ESP32">
+  <img src="https://img.shields.io/badge/framework-Arduino-green" alt="Framework: Arduino">
+  <img src="https://img.shields.io/badge/display-SSD1306_OLED-yellow" alt="Display: SSD1306 OLED">
+  <img src="https://img.shields.io/badge/MediaPipe-Face%20Tracking-orange" alt="MediaPipe Face Tracking">
+  <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="License: MIT">
+</p>
+
+<p align="center">
+  <img src="docs/esp32-oled-webcam-stream-mediapipe.gif" alt="ESP32 streaming a live webcam feed to a 128x64 SSD1306 OLED display using MediaPipe face tracking" width="500"/>
+</p>
+
+<p align="center">
+  <a target="_blank" href="https://www.sanderdesnaijer.com/projects/esp32-mini-oled-webcam-stream">Project page</a>
   ·
-  <a href="https://youtu.be/MOwyMbOZq-Y">YouTube tutorial</a>
+  <a target="_blank" href="https://youtu.be/MOwyMbOZq-Y">YouTube tutorial</a>
   ·
-  <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe">Source</a>
+  <a href="https://github.com/sanderdesnaijer/esp32-mini-oled-webcam-stream-mediapipe/blob/main/browser-oled.ino">Source</a>
 </p>
 
 ### Full video tutorial
 
-You can follow this YouTube tutorial which walks through all the steps end to end: [`https://youtu.be/MOwyMbOZq-Y`](https://youtu.be/MOwyMbOZq-Y).
+<p align="center">
+  <a href="https://youtu.be/MOwyMbOZq-Y">
+    <img src="docs/youtube-thumb-tutorial.webp" alt="ESP32 OLED webcam stream tutorial video - watch on YouTube" width="600">
+  </a>
+</p>
 
 Stream your phone or laptop webcam to a tiny 128x64 SSD1306 OLED. Your browser captures video, processes it into a 1-bit stylized frame (dithered, edges, motion trail, scanlines, skull, glitch, SHODAN), and pushes it to the ESP32 over WiFi. The ESP32 just receives and draws.
 
