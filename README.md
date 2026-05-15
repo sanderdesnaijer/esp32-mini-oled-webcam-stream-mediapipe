@@ -22,15 +22,15 @@
 
 ### Full video tutorial
 
+Stream your phone or laptop webcam to a tiny 128x64 SSD1306 OLED. Your browser captures video, processes it into a 1-bit stylized frame (dithered, edges, motion trail, scanlines, skull, glitch, SHODAN), and pushes it to the ESP32 over WiFi. The ESP32 just receives and draws.
+
+Works on **iPhone (Safari)**, **Android (Chrome)**, and any desktop browser. Browsers block `getUserMedia` on any LAN IP unless the page is HTTPS, so the sketch runs both an HTTP and an HTTPS server using a self-signed certificate you generate once.
+
 <p align="center">
   <a href="https://youtu.be/MOwyMbOZq-Y">
     <img src="docs/youtube-thumb-tutorial.webp" alt="ESP32 OLED webcam stream tutorial video - watch on YouTube" width="600">
   </a>
 </p>
-
-Stream your phone or laptop webcam to a tiny 128x64 SSD1306 OLED. Your browser captures video, processes it into a 1-bit stylized frame (dithered, edges, motion trail, scanlines, skull, glitch, SHODAN), and pushes it to the ESP32 over WiFi. The ESP32 just receives and draws.
-
-Works on **iPhone (Safari)**, **Android (Chrome)**, and any desktop browser. Browsers block `getUserMedia` on any LAN IP unless the page is HTTPS, so the sketch runs both an HTTP and an HTTPS server using a self-signed certificate you generate once.
 
 Keywords: ESP32, SSD1306, mini OLED, MediaPipe, Face Landmarker, webcam, Arduino, PlatformIO, ESP-IDF, HTTPS, iOS Safari camera, Chrome camera, face tracking, 1-bit dithering.
 
